@@ -37,7 +37,7 @@
 <script setup>
 const re = new RegExp("\\*(.*?)\\*");
 const props = defineProps({
-    questionId: Number,
+    questionId: String,
     questionTitle: String,
     questionMeans: Array,
     isTrap: {
