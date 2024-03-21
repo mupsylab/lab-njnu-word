@@ -7,6 +7,10 @@ import { onMounted, h, render } from 'vue';
 import { initJsPsych } from 'jspsych';
 import { jsPsychHtmlKeyboardResponse, jsPsychHtmlButtonResponse, jsPsychSurveyHtmlForm, jsPsychInstructions } from '@/utils/jspsych/plugin_all_in_one.js';
 import question from "./question.vue";
+import inst1 from "./inst/i1.vue";
+import inst2 from "./inst/i2.vue";
+import inst3 from "./inst/i3.vue";
+import expInst1 from "./inst/e1.vue";
 
 const jsPsych = initJsPsych({
   display_element: "exp",
@@ -34,62 +38,30 @@ const timeline = [{
 }];
 
 // 指导语
-const ss = "   \
-    .title{ \
-        font-size: " + 30 + "px;\
-        text-align: center;\
-        font-weight: 700;\
-    }\
-    p{ \
-        font-size: " + 20 + "px; \
-        text-indent: 2em; \
-        text-align: left; \
-        margin-block: " + 10 + "px; \
-        line-height: 1.5em; \
-        text-align: justify \
-    } \
-    .example{ \
-        text-align: center; \
-        font-weight: 100; \
-    }";
 timeline.push({
   // 指导语部分
   type: jsPsychInstructions,
-  pages: [
-    "<div class='contacts'>   <p class='title' style='color:#fff'>第一部分</p> <div style='color: white;'class='content_box'> \
-            <style>" + ss + " \
-        </style>    \
-<div style='text-align: left'>\
-<p>您需要对给出的词语进行维度评分，在每次实验开始您会看到以下问题：</p> \
-<p class='example'>【词语】可以用于描述某个人的【维度】</p> \
-<p class='example'>1  2  3  4  5  6  7  8  9 </p> \
-<p class='example'><br/>维度定义</p> \
-\
-<p>其中【维度】是从能力, 道德, 社交能力, 外貌, 社会经济地位五个维度中随机选出的，您需要对该段描述进行1-9分的评分，其中1分表示非常不同意，9分表示非常同意。采用鼠标选择相应数字进行评分，在每次评分后请按“空格键”继续。</p> \
-<p>其中：</p> \
-<p>道德：用于描述人的道德品格或道德品质（包括积极与消极）</p> \
-<p>能力：用于描述人可用来完成某一项目标或者任务的综合素质（这里的目标和任务不包括人际交往）</p> \
-<p>社交能力：用于描述人的人际交往能力</p> \
-<p>外貌：用于描述人的长相、身材等</p> \
-<p>社会经济地位：用于描述人的社会地位和经济水平等</p> \
-<p><strong>请注意：</strong>这些词可能有积极词，也可能有消极词，请您不要根据积极和消极进行评分，而是依据该词是否适合用来描述该维度进行评分。</p>\
-</div>", "<div class='contacts'>   <p class='title' style='color:#fff'>第一部分</p> <div style='color: white;'class='content_box'>\
-<style>" + ss + " \
-</style>    \
-<div style='text-align: left; margin: 0 15% 0 15%;'>\
-<p>举个例子：“强盗”这个词，看到之后通常会想到“用暴力抢夺他人财物的人”，这时，虽然该词为消极词，但它是用来描述某人的道德水平低，因此对“【强盗】可以用于描述某个人的【道德】”这一问题的评分通常为8分或9分。而“拘泥”这个词，有的人看到后可能会想到它的动词含义，即“不懂得变通”，所以在“【拘泥】可以用于描述某个人的【能力】”这一问题上偏向于同意，即评分在7分以上；而有的人可能会联想到它的形容词含义，即“拘束,不自然”，所以他们认为这个词并不适合用来描述能力，即评分在3分以下；还有的人可能觉得这个词既可以描述，又不可以描述，那么此时的评分通常在5分左右。</p> \
-<p><strong>因此，看到词汇的感受是因人而异的，没有对错之分，在评定的时候依据自己的第一感觉即可。</strong></p>\
-</div>", "<div class='contacts'>   <p class='title' style='color:#fff'>第一部分</p> <div style='color: white;'class='content_box'>\
-            <style>" + ss + " \
-        </style>    \
-<div style='text-align: left'>\
-<p>实验的呈现界面如下：</p> \
-<p class='example'><img src='' /></p>\
-\
-<p>如果您已经明白本研究的任务，请按 <strong>继续</strong> 开始正式实验。</p> \
-<p>如果您还有疑问，请咨询实验人员。</p> \
-</div>"
-  ],
+  pages() {
+    const dom1 = document.createElement("div");
+    render(h(inst1), dom1);
+    const dom2 = document.createElement("div");
+    render(h(inst2), dom2);
+    const dom3 = document.createElement("div");
+    render(h(inst3), dom3);
+    return [dom1.outerHTML, dom2.outerHTML, dom3.outerHTML];
+  },
+  show_clickable_nav: true,
+  allow_backward: true,
+  button_label_previous: "返回",
+  button_label_next: "继续",
+}, {
+  // 指导语部分
+  type: jsPsychInstructions,
+  pages() {
+    const dom1 = document.createElement("div");
+    render(h(expInst1), dom1);
+    return [dom1.outerHTML];
+  },
   show_clickable_nav: true,
   allow_backward: true,
   button_label_previous: "返回",
@@ -192,7 +164,7 @@ timeline.push({
           t_res.push(questions[index]);
           if (t_res.length == block_num[t]) {
             const a = jsPsych.randomization.shuffle(t_res);
-            a.splice(1, 0, trapQues.pop(1));
+            a.splice(20, 0, trapQues.pop(1));
             a.splice(40, 0, trapQues.pop(1));
             res.push(a);
             t_res = [];
@@ -239,7 +211,18 @@ const trial = {
             trapError = true;
           }
         }
-        jsPsych.finishTrial({ answers: answer, rt: new Date().getTime() - start_time, isTrap });
+        const rt = new Date().getTime() - start_time;
+        Object.keys(answer).forEach(k => {
+          let o = { 
+            save: true,
+            rt: rt,
+            qId: k,
+            qVal: answer[k]
+          };
+          jsPsych.data.write(o);
+        });
+        jsPsych.finishTrial({ answers: answer, rt: rt, isTrap });
+        console.log(jsPsych.data.get().values());
         document.body.removeEventListener("keyup", EventListener);
       }
     };
@@ -292,7 +275,9 @@ timeline.push({
     return "回答完成~";
   },
   on_load() {
-    jsPsych.data.get().localSave("csv", "a.csv");
+    const time = new Date().getTime();
+    jsPsych.data.get().localSave("csv", `${time}_raw.csv`);
+    jsPsych.data.get().filter({ save: true }).localSave("csv", `${time}_clean.csv`);
   }
 });
 
