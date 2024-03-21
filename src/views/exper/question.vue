@@ -5,24 +5,32 @@
             <table>
                 <colgroup>
                     <col width="30%">
-                    <col width="14%">
-                    <col width="14%">
-                    <col width="14%">
-                    <col width="14%">
-                    <col width="14%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
+                    <col width="10%">
                 </colgroup>
                 <tbody>
                     <tr>
                         <td></td>
-                        <td>完全不熟悉</td>
-                        <td>比较不熟悉</td>
-                        <td>基本熟悉</td>
-                        <td>比较熟悉</td>
-                        <td>完全熟悉</td>
+                        <td style="font-weight: 700;">非常不熟悉</td>
+                        <td style="font-weight: 700;">比较不熟悉</td>
+                        <td style="font-weight: 700;">有点不熟悉</td>
+                        <td style="font-weight: 700;">一般熟悉</td>
+                        <td style="font-weight: 700;">有点熟悉</td>
+                        <td style="font-weight: 700;">比较熟悉</td>
+                        <td style="font-weight: 700;">非常熟悉</td>
                     </tr>
                     <tr v-for="v, i in props.questionMeans">
-                        <td style="text-align: left;">释义{{ i + 1 }}: {{ v }}</td>
-                        <td v-for="v in [1, 2, 3, 4, 5]" @click="emits('clickVal', `${questionId}_${i}`, v)">
+                        <td style="text-align: left;">
+                            <span style="font-weight: 700;">释义{{ i + 1 }}</span>:
+                            <span style="font-size: 20px;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[1] : v }}</span>
+                            <span style="font-size: 18px; font-style: italic;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[2] : "" }}</span>
+                        </td>
+                        <td v-for="v in [1, 2, 3, 4, 5, 6, 7]" @click="emits('clickVal', `${questionId}_${i}`, v)">
                             <input type="radio" :name="`${questionId}_${i}`" :value="v" />
                         </td>
                     </tr>
@@ -33,6 +41,7 @@
 </template>
 
 <script setup>
+const re = new RegExp("\\*(.*?)\\*");
 const props = defineProps({
     questionId: Number,
     questionTitle: String,
@@ -43,13 +52,15 @@ const emits = defineEmits(["clickVal"]);
 
 <style scoped>
     .question-box {
-        width: 900px;
+        width: 1200px;
         margin: 20px 0;
         font-size: 24px;
         font-weight: 400;
+        user-select: none;
     }
 
     .question-title {
+        font-weight: 700;
         text-align: left;
     }
 

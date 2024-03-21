@@ -5,7 +5,7 @@
 <script setup>
 import { onMounted, h, render } from 'vue';
 import { initJsPsych } from 'jspsych';
-import { jsPsychHtmlKeyboardResponse, jsPsychSurveyHtmlForm } from '@/utils/jspsych/plugin_all_in_one.js';
+import { jsPsychHtmlKeyboardResponse, jsPsychCallFunction } from '@/utils/jspsych/plugin_all_in_one.js';
 import question from "./question.vue";
 
 const jsPsych = initJsPsych({
@@ -35,6 +35,8 @@ const timeline = [{
 
 let question_pos = -1;
 const questions = [];
+let use_q = [];
+const leng = 291;
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   choices: ["NO_KEYS"],
@@ -57,13 +59,32 @@ timeline.push({
         jsPsych.finishTrial({ load: true });
       })
   }
+}, {
+  type: jsPsychCallFunction,
+  func() {
+    const curr = 1; // 1 or 2
+    const j = (curr - 1) * leng;
+    const res = [];
+
+    let t_res = [];
+    for(let i = 0; i < leng; i++) {
+      const index = j + i;
+      t_res.push(questions[index]);
+      if (t_res.length == 80) {
+        res.push(jsPsych.randomization.shuffle(t_res));
+        t_res = [];
+      }
+    }
+    if (t_res.length > 0) res.push(jsPsych.randomization.shuffle(t_res));
+    use_q = res;
+  }
 });
 
 timeline.push({
   timeline: [{
     type: jsPsychHtmlKeyboardResponse,
     choices: ["NO_KEYS"],
-    stimulus: "<div id='main'></div>",
+    stimulus: "<div id='main' style='outline: none;'></div>",
     on_load: () => {
       let max_num = 1;
       let i = 0;
@@ -71,8 +92,10 @@ timeline.push({
       const answer = {};
       const domM = document.querySelector("#main");
       while (i < max_num) {
-        if(question_pos >= questions.length) break;
-        const { word, mean, id } = questions[question_pos];
+        // 问卷呈现达到了长度
+        if (question_pos >= leng) break;
+        const { word, mean, id } = use_q[Math.floor(question_pos / 80)][question_pos % 80];
+        // 当前呈现的题目数量也达到了问卷长度
         if (i > 0 && i + mean.length >= max_num) break;
         i += mean.length;
         question_pos += 1;
@@ -88,26 +111,24 @@ timeline.push({
         domM.appendChild(dom);
       }
 
-      const dom = document.createElement("div");
-      dom.id = "question-submit";
-      dom.innerText = "提交";
-      dom.style = `display: block;
-        width: 64px;
-        height: 32px;
-        margin: 0 0 0 auto;
-        padding: 7px;
-        box-sizing: content-box;
-        background: #fff;
-        color: black;
-        font-size: 24px;
-        text-align: center;
-        line-height: 32px;
-        border-radius: 10px;
-        cursor: pointer;`;
-      dom.addEventListener("click", (e) => {
-        if (Object.keys(answer).length == i) jsPsych.finishTrial({ answers: answer });
-      });
-      domM.appendChild(dom);
+      const start_time = new Date().getTime();
+      const EventListener = (e) => {
+        if (e.code == "Space" && Object.keys(answer).length == i) {
+          jsPsych.finishTrial({ answers: answer, rt: new Date().getTime() - start_time });
+          document.body.removeEventListener("keyup", EventListener);
+        }
+      };
+      document.body.addEventListener("keyup", EventListener);
+    }
+  }, {
+    timeline: [{
+      type: jsPsychHtmlKeyboardResponse,
+      choices: [" "],
+      stimulus: "<p style='font-size: 24px;'>休息一下吧</p><p style='font-size: 24px;'>按 空格键 继续</p>"
+    }],
+    conditional_function: () => {
+      // 做80轮，休息一下
+      return question_pos % 80 == 0;
     }
   }],
   conditional_function: () => {
@@ -117,7 +138,7 @@ timeline.push({
     return true;
   },
   loop_function: () => {
-    if (question_pos < questions.length) {
+    if (question_pos < leng) {
       return true;
     }
     return false;
@@ -126,11 +147,12 @@ timeline.push({
 
 // setInterval(() => {
 //   ["input", "#question-submit"].forEach(v => {
-//   const doms = document.querySelectorAll(v);
-//   doms.forEach(dom => {
-//     dom.click();
+//     const doms = document.querySelectorAll(v);
+//     doms.forEach(dom => {
+//       dom.click();
+//     });
 //   });
-// });
+//   document.body.dispatchEvent(new KeyboardEvent("keyup", {code: "Space"}));
 // }, 100);
 
 timeline.push({
@@ -138,7 +160,7 @@ timeline.push({
   choices: ["NO_KEYS"],
   stimulus: "回答完成~",
   on_load() {
-    // jsPsych.data.get().localSave("csv", "a.csv");
+    jsPsych.data.get().localSave("csv", "a.csv");
   }
 });
 

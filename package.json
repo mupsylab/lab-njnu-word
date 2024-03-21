@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "author": "mupsy",
-  "type": "module",
   "main": "src/electron-main.js",
   "build": {
     "appId": "com.mupsy.wordEvalSupply",
