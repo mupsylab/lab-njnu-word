@@ -1,10 +1,11 @@
 <template>
     <div class="question-box">
-        <div class="question-title">{{ props.questionTitle }}</div>
+        <div class="question-title">{{ !props.isTrap ? props.questionTitle : props.questionMeans[0] }}</div>
         <div class="question-table">
             <table>
                 <colgroup>
-                    <col width="30%">
+                    <col v-if="!props.isTrap" width="30%">
+                    <col v-if="props.isTrap" width="5%">
                     <col width="10%">
                     <col width="10%">
                     <col width="10%">
@@ -20,9 +21,9 @@
                     </tr>
                     <tr v-for="v, i in props.questionMeans">
                         <td style="text-align: left;">
-                            <span style="font-weight: 700;">释义{{ i + 1 }}</span>:
-                            <span style="font-size: 20px;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[1] : v }}</span>
-                            <span style="font-size: 18px; font-style: italic;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[2] : "" }}</span>
+                            <span style="font-weight: 700;" v-if="!props.isTrap" >释义{{ i + 1 }}:</span>
+                            <span v-if="!props.isTrap" style="font-size: 20px;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[1] : v }}</span>
+                            <span v-if="!props.isTrap" style="font-size: 18px; font-style: italic;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[2] : "" }}</span>
                         </td>
                         <td v-for="v in [1, 2, 3, 4, 5, 6, 7]" @click="emits('clickVal', `${questionId}_${i}`, v)">
                             <input type="radio" :name="`${questionId}_${i}`" :value="v" />

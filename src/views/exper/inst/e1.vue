@@ -6,6 +6,8 @@
             <div><question question-id="s1" :question-means="means" question-title="词语"></question></div>
             <p style="font-weight: 700;">您需要对词语的每个释义的熟悉度进行评分，评分采用鼠标选择相应选项即可，在每次评分后请按“空格键”继续。</p>
             <p style="font-weight: 700;">注意，对于每个词语的每个释义的熟悉程度是因人而异的，没有对错之分，在评定的时候依据自己的第一感觉即可。</p>
+            <p>实验的呈现界面如下：</p>
+            <p><img style="width: 100%;" src="../../../assets/images/e2.png" alt=""></p>
             <p>如果您已经明白本研究的任务，请按 继续 开始正式实验。</p>
             <p>如果您还有疑问，请咨询实验人员。</p>
         </div>
@@ -34,7 +36,6 @@ const means = ["词性, 释义, *例子*", "词性, 释义, *例子*", "..."];
 }
 
 .exp_inst_1 .content>div {
-    border: 1px solid #fff;
     margin: auto;
 }
 </style>
