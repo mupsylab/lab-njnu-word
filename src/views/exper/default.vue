@@ -4,6 +4,7 @@
 
 <script setup>
 import { onMounted, h, render } from 'vue';
+import { useRouter, useRoute } from 'vue-router'
 import { initJsPsych } from 'jspsych';
 import { jsPsychHtmlKeyboardResponse, jsPsychHtmlButtonResponse, jsPsychSurveyHtmlForm, jsPsychInstructions, jsPsychFullscreen } from '@/utils/jspsych/plugin_all_in_one.js';
 import question from "./question.vue";
@@ -11,6 +12,11 @@ import inst1 from "./inst/i1.vue";
 import inst2 from "./inst/i2.vue";
 import inst3 from "./inst/i3.vue";
 import expInst1 from "./inst/e1.vue";
+
+const router = useRouter();
+const route = useRoute();
+
+const curr = parseInt(route.params["day"]);
 
 const debug = false;
 const jsPsych = initJsPsych({
@@ -128,7 +134,6 @@ timeline.push({
   }]
 });
 
-const curr = 1; // 1 or 2
 const block_num = [62, 62, 61, 61];
 // 预处理数据
 let use_q = [];
@@ -166,14 +171,14 @@ timeline.push({
           { ans: 7, word: "检测题", mean: ["人字总笔画数为2画"], id: "t6", isTrap: true },
           { ans: 1, word: "检测题", mean: ["四川省的省会是北京"], id: "t7", isTrap: true },
           { ans: 7, word: "检测题", mean: ["长方形有四条边"], id: "t8", isTrap: true }
-        ].reverse();
+        ].splice((curr - 1) * 4, 4).reverse();
         for (let i = 0; i < 246; i++) {
           const index = j + i;
           t_res.push(questions[index]);
           if (t_res.length == block_num[t]) {
             const a = jsPsych.randomization.shuffle(t_res);
-            a.splice(20, 0, trapQues.pop(1));
-            a.splice(40, 0, trapQues.pop(1));
+            // a.splice(20, 0, trapQues.pop(1));
+            a.splice(35, 0, trapQues.pop(1));
             res.push(a);
             t_res = [];
             t += 1;
@@ -251,7 +256,7 @@ const rest = {
     on_load() {
       const start_time = new Date().getTime();
       const EventListener = (e) => {
-        if (e.code == "Space" && Object.keys(answer).length == mean.length) {
+        if (e.code == "Space") {
           const rt = new Date().getTime() - start_time;
           jsPsych.data.write({
             save: true,
@@ -259,6 +264,7 @@ const rest = {
             qId: "rest"
           });
           document.body.removeEventListener("keyup", EventListener);
+          jsPsych.finishTrial();
         }
       };
       document.body.addEventListener("keyup", EventListener);

@@ -44,7 +44,7 @@
       "icon": "public/favicon.ico",
       "target": [
         {
-          "target": "portable",
+          "target": "zip",
           "arch": [
             "x64",
             "ia32"
