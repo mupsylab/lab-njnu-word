@@ -45,7 +45,7 @@ const props = defineProps({
         default: false
     }
 });
-const showSelectText = props.isTrap ? ["非常不熟悉", "比较不熟悉", "有点不熟悉", "一般熟悉", "有点熟悉", "比较熟悉", "非常熟悉"] : 
+const showSelectText = !props.isTrap ? ["非常不熟悉", "比较不熟悉", "有点不熟悉", "一般熟悉", "有点熟悉", "比较熟悉", "非常熟悉"] : 
                                       ["非常不同意", "比较不同意", "有点不同意", "一般同意", "有点同意", "比较同意", "非常同意"];
 const emits = defineEmits(["clickVal"]);
 </script>
