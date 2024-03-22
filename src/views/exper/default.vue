@@ -12,6 +12,7 @@ import inst2 from "./inst/i2.vue";
 import inst3 from "./inst/i3.vue";
 import expInst1 from "./inst/e1.vue";
 
+const debug = true;
 const jsPsych = initJsPsych({
   display_element: "exp",
   on_finish() {
@@ -116,6 +117,7 @@ timeline.push({
       let edu = ["below primary school", "primary school", "junior middle school", "high school", "university", "master", "doctor", "other"];
 
       info["Education"] = edu[parseInt(data.response.Q0) - 1];
+      console.log(info)
     }
   }]
 });
@@ -172,7 +174,13 @@ timeline.push({
           }
         }
         use_q = res;
-
+        if (debug) {
+          const r = [];
+          for (let i = 0; i < 15; i++) {
+            r.push(use_q[0][i]);
+          }
+          use_q = [r];
+        }
         jsPsych.finishTrial({ load: true });
       })
   }
@@ -213,7 +221,7 @@ const trial = {
         }
         const rt = new Date().getTime() - start_time;
         Object.keys(answer).forEach(k => {
-          let o = { 
+          let o = {
             save: true,
             rt: rt,
             qId: k,
@@ -222,7 +230,6 @@ const trial = {
           jsPsych.data.write(o);
         });
         jsPsych.finishTrial({ answers: answer, rt: rt, isTrap });
-        console.log(jsPsych.data.get().values());
         document.body.removeEventListener("keyup", EventListener);
       }
     };
@@ -232,13 +239,29 @@ const trial = {
 const rest = {
   timeline: [{
     type: jsPsychHtmlKeyboardResponse,
-    choices: [" "],
-    stimulus: "<p style='font-size: 24px;'>休息一下吧</p><p style='font-size: 24px;'>按 空格键 继续</p>"
+    choices: ["NO_KEYS"],
+    stimulus: "<p style='font-size: 24px;'>休息一下吧</p><p style='font-size: 24px;'>按 空格键 继续</p>",
+    on_load() {
+      const start_time = new Date().getTime();
+      const EventListener = (e) => {
+        if (e.code == "Space" && Object.keys(answer).length == mean.length) {
+          const rt = new Date().getTime() - start_time;
+          jsPsych.data.write({
+            save: true,
+            rt: rt,
+            qId: "rest"
+          });
+          document.body.removeEventListener("keyup", EventListener);
+        }
+      };
+      document.body.addEventListener("keyup", EventListener);
+    }
   }],
   conditional_function: () => {
     if (curr_index == use_q[curr_block].length) {
       curr_block += 1;
       curr_index = 0;
+      if (curr_block == use_q.length) return false;
       return true;
     }
     return false;
@@ -255,16 +278,6 @@ timeline.push({
   }
 });
 
-// setInterval(() => {
-//   ["input", "#question-submit"].forEach(v => {
-//     const doms = document.querySelectorAll(v);
-//     doms.forEach(dom => {
-//       dom.click();
-//     });
-//   });
-//   document.body.dispatchEvent(new KeyboardEvent("keyup", {code: "Space"}));
-// }, 100);
-
 timeline.push({
   type: jsPsychHtmlKeyboardResponse,
   choices: ["NO_KEYS"],
@@ -277,7 +290,7 @@ timeline.push({
   on_load() {
     const time = new Date().getTime();
     jsPsych.data.get().localSave("csv", `${time}_raw.csv`);
-    jsPsych.data.get().filter({ save: true }).localSave("csv", `${time}_clean.csv`);
+    jsPsych.data.get().filter({ save: true }).addToAll(info).localSave("csv", `${time}_clean.csv`);
   }
 });
 
