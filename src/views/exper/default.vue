@@ -5,7 +5,7 @@
 <script setup>
 import { onMounted, h, render } from 'vue';
 import { initJsPsych } from 'jspsych';
-import { jsPsychHtmlKeyboardResponse, jsPsychHtmlButtonResponse, jsPsychSurveyHtmlForm, jsPsychInstructions } from '@/utils/jspsych/plugin_all_in_one.js';
+import { jsPsychHtmlKeyboardResponse, jsPsychHtmlButtonResponse, jsPsychSurveyHtmlForm, jsPsychInstructions, jsPsychFullscreen } from '@/utils/jspsych/plugin_all_in_one.js';
 import question from "./question.vue";
 import inst1 from "./inst/i1.vue";
 import inst2 from "./inst/i2.vue";
@@ -36,6 +36,11 @@ const timeline = [{
       return false;
     }
   }
+}, {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true,
+  message: "点击开始进入全屏",
+  button_label: "开始"
 }];
 
 // 指导语
