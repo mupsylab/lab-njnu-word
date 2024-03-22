@@ -74,7 +74,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "pack": "vite build && electron-builder -p always"
+    "pack": "vite build && electron-builder"
   },
   "dependencies": {
     "@jspsych/extension-mouse-tracking": "^1.0.3",
