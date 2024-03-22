@@ -25,8 +25,8 @@
                             <span v-if="!props.isTrap" style="font-size: 20px;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[1] : v }}</span>
                             <span v-if="!props.isTrap" style="font-size: 18px; font-style: italic;">{{ v.match(/(.*)\*(.*)\*/) ? v.match(/(.*)\*(.*)\*/)[2] : "" }}</span>
                         </td>
-                        <td v-for="v in [1, 2, 3, 4, 5, 6, 7]" @click="emits('clickVal', `${questionId}_${i}`, v)">
-                            <input type="radio" :name="`${questionId}_${i}`" :value="v" />
+                        <td v-for="v in [1, 2, 3, 4, 5, 6, 7]">
+                            <input @click="emits('clickVal', `${questionId}_${i}`, v)" type="radio" :name="`${questionId}_${i}`" :value="v" />
                         </td>
                     </tr>
                 </tbody>
