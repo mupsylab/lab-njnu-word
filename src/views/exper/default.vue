@@ -39,7 +39,7 @@ const timeline = [{
 }, {
   type: jsPsychFullscreen,
   fullscreen_mode: true,
-  message: "点击开始进入全屏",
+  message: "<div>点击开始进入全屏</div>",
   button_label: "开始"
 }];
 
@@ -292,11 +292,15 @@ timeline.push({
     }
     return "回答完成~";
   },
+  stimulus_duration: 10000,
   on_load() {
     const time = new Date().getTime();
     jsPsych.data.get().localSave("csv", `${time}_raw.csv`);
     jsPsych.data.get().filter({ save: true }).addToAll(info).localSave("csv", `${time}_clean.csv`);
   }
+}, {
+  type: jsPsychFullscreen,
+  fullscreen_mode: false
 });
 
 onMounted(() => {
