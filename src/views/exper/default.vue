@@ -12,7 +12,7 @@ import inst2 from "./inst/i2.vue";
 import inst3 from "./inst/i3.vue";
 import expInst1 from "./inst/e1.vue";
 
-const debug = true;
+const debug = false;
 const jsPsych = initJsPsych({
   display_element: "exp",
   on_finish() {

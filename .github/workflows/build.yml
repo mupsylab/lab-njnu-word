@@ -36,7 +36,7 @@ jobs:
       - name: Build Electron App
         run: npm run pack
         env:
-          GH_TOKEN: ${{ secrets.Page }}
+          GH_TOKEN: ${{ secrets.SECRET }}
   
       - name: Cleanup Artifacts for Windows
         if: ${{ matrix.os }} == "windows-latest"
