@@ -42,7 +42,7 @@ jobs:
         if: ${{ matrix.os }} == "windows-latest"
         run: |
           $path = "release"
-          Get-ChildItem -Path $path -Recurse | Where-Object { !$_.Name.EndsWith(".exe") } | Remove-Item -Force
+          Get-ChildItem -Path $path -Recurse | Where-Object { !$_.Name.EndsWith(".exe") } | Remove-Item
         shell: pwsh
   
       - name: Cleanup Artifacts for MacOS
