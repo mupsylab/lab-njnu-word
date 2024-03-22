@@ -127,7 +127,7 @@ timeline.push({
   }]
 });
 
-const curr = 2; // 1 or 2
+const curr = 1; // 1 or 2
 const block_num = [62, 62, 61, 61];
 // 预处理数据
 let use_q = [];

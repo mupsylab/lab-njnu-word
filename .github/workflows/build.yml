@@ -46,7 +46,7 @@ jobs:
       - name: Cleanup Artifacts for MacOS
         if: ${{ matrix.os }} == "macos-latest"
         run: |
-          npx rimraf "release/!(*.dmg)"
+          npx --glob rimraf "release/!(*.dmg)"
   
       - name: upload artifacts
         uses: actions/upload-artifact@v3.0.0
