@@ -47,86 +47,86 @@ const timeline = [{
 const info = {};
 
 // 指导语
-// timeline.push({
-//   // 指导语部分
-//   type: jsPsychInstructions,
-//   pages() {
-//     const dom1 = document.createElement("div");
-//     render(h(inst1), dom1);
-//     const dom2 = document.createElement("div");
-//     render(h(inst2), dom2);
-//     const dom3 = document.createElement("div");
-//     render(h(inst3), dom3);
-//     return [dom1.outerHTML, dom2.outerHTML, dom3.outerHTML];
-//   },
-//   show_clickable_nav: true,
-//   allow_backward: true,
-//   button_label_previous: "返回",
-//   button_label_next: "继续",
-// }, {
-//   // 指导语部分
-//   type: jsPsychInstructions,
-//   pages() {
-//     const dom1 = document.createElement("div");
-//     render(h(expInst1), dom1);
-//     return [dom1.outerHTML];
-//   },
-//   show_clickable_nav: true,
-//   allow_backward: true,
-//   button_label_previous: "返回",
-//   button_label_next: "继续",
-// });
+timeline.push({
+  // 指导语部分
+  type: jsPsychInstructions,
+  pages() {
+    const dom1 = document.createElement("div");
+    render(h(inst1), dom1);
+    const dom2 = document.createElement("div");
+    render(h(inst2), dom2);
+    const dom3 = document.createElement("div");
+    render(h(inst3), dom3);
+    return [dom1.outerHTML, dom2.outerHTML, dom3.outerHTML];
+  },
+  show_clickable_nav: true,
+  allow_backward: true,
+  button_label_previous: "返回",
+  button_label_next: "继续",
+}, {
+  // 指导语部分
+  type: jsPsychInstructions,
+  pages() {
+    const dom1 = document.createElement("div");
+    render(h(expInst1), dom1);
+    return [dom1.outerHTML];
+  },
+  show_clickable_nav: true,
+  allow_backward: true,
+  button_label_previous: "返回",
+  button_label_next: "继续",
+});
 
-// timeline.push({
-//   timeline: [{
-//     type: jsPsychSurveyHtmlForm,
-//     preamble: "<p style =' color : white'>你的名字是</p>",
-//     html: "<p><input name='Q0' type='text' value='' required /></p>",
-//     button_label: "继续",
-//     on_finish: function (data) {
-//       info["Name"] = data.response.Q0;
-//     }
-//   }, {
-//     type: jsPsychHtmlButtonResponse,
-//     stimulus: "<p style = 'color : white'>你的性别</p>",
-//     choices: ['男', '女', '其他'],
-//     on_finish: function (data) {
-//       // console.log(data)
-//       info["Sex"] = data.response == 0 ? "Male" : (data.response == 1 ? "Female" : "Other")
-//     }
-//   }, {
-//     type: jsPsychSurveyHtmlForm,
-//     preamble: "<p style = 'color : white'>你的出生年</p>",
-//     html: `
-//         <p><input name="Q0" type="number" placeholder="1900~2021" min=1900 max=2021
-//         oninput="if(value.length>4) value=value.slice(0,4)" required /></p>`,
-//     button_label: '继续',
-//     on_finish: function (data) {
-//       info["BirthYear"] = data.response.Q0;
-//     }
-//   }, {
-//     type: jsPsychSurveyHtmlForm,
-//     preamble: "<p style = 'color : white'>教育经历</p>",
-//     html: `
-//            <p><select name="Q0" size=10>
-//            <option value=1>小学以下</option>
-//            <option value=2>小学</option>
-//            <option value=3>初中</option>
-//            <option value=4>高中</option>
-//            <option value=5>大学</option>
-//            <option value=6>硕士</option>
-//            <option value=7>博士</option>
-//            <option value=8>其他</option>
-//            </select></p>`,
-//     button_label: '继续',
-//     on_finish: function (data) {
-//       let edu = ["below primary school", "primary school", "junior middle school", "high school", "university", "master", "doctor", "other"];
+timeline.push({
+  timeline: [{
+    type: jsPsychSurveyHtmlForm,
+    preamble: "<p style =' color : white'>你的名字是</p>",
+    html: "<p><input name='Q0' type='text' value='' required /></p>",
+    button_label: "继续",
+    on_finish: function (data) {
+      info["Name"] = data.response.Q0;
+    }
+  }, {
+    type: jsPsychHtmlButtonResponse,
+    stimulus: "<p style = 'color : white'>你的性别</p>",
+    choices: ['男', '女', '其他'],
+    on_finish: function (data) {
+      // console.log(data)
+      info["Sex"] = data.response == 0 ? "Male" : (data.response == 1 ? "Female" : "Other")
+    }
+  }, {
+    type: jsPsychSurveyHtmlForm,
+    preamble: "<p style = 'color : white'>你的出生年</p>",
+    html: `
+        <p><input name="Q0" type="number" placeholder="1900~2021" min=1900 max=2021
+        oninput="if(value.length>4) value=value.slice(0,4)" required /></p>`,
+    button_label: '继续',
+    on_finish: function (data) {
+      info["BirthYear"] = data.response.Q0;
+    }
+  }, {
+    type: jsPsychSurveyHtmlForm,
+    preamble: "<p style = 'color : white'>教育经历</p>",
+    html: `
+           <p><select name="Q0" size=10>
+           <option value=1>小学以下</option>
+           <option value=2>小学</option>
+           <option value=3>初中</option>
+           <option value=4>高中</option>
+           <option value=5>大学</option>
+           <option value=6>硕士</option>
+           <option value=7>博士</option>
+           <option value=8>其他</option>
+           </select></p>`,
+    button_label: '继续',
+    on_finish: function (data) {
+      let edu = ["below primary school", "primary school", "junior middle school", "high school", "university", "master", "doctor", "other"];
 
-//       info["Education"] = edu[parseInt(data.response.Q0) - 1];
-//       console.log(info)
-//     }
-//   }]
-// });
+      info["Education"] = edu[parseInt(data.response.Q0) - 1];
+      console.log(info)
+    }
+  }]
+});
 
 const curr = 1; // 1 or 2
 const block_num = [62, 62, 61, 61];
